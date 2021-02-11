@@ -14,6 +14,6 @@ class Entry:
 
     def concat(self, highlight = False) -> Word:
         if highlight:
-            return Word(f'{self.pref.str}\u001b[31m{self.stem.str}\u001b[0m{self.post.str}')
+            return Word(f'{self.pref.str}\033[31m{self.stem.str}\033[39m{self.post.str}')
         else:
             return Word(f'{self.pref.str}{self.stem.str}{self.post.str}')

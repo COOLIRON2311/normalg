@@ -57,5 +57,5 @@ class MarkovAlgorithm:
                 if _sub.final:
                     return word
                 _it += 1
-                if _it > self.MAXITER:
+                if self.MAXITER and _it > self.MAXITER:
                     raise StopIteration('maximum iteration count exceeded')
