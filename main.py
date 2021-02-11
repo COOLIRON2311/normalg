@@ -1,5 +1,6 @@
 from msvcrt import getch as _getch
 from os import name
+from sys import exit
 from colorama import init
 from src import MarkovAlgorithm
 from src.Substitution import Substitution
