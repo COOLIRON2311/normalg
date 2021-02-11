@@ -2,7 +2,7 @@ from .Entry import Entry, Word
 
 
 class Substitution:
-    SPLIT: str = '->'
+    SPLIT: str = ' '
     pair: 'list[Word]'
     final: bool
 

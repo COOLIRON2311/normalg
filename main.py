@@ -1,6 +1,5 @@
 from msvcrt import getch as _getch
 from os import name
-from sys import stdout
 from colorama import init
 from src import MarkovAlgorithm
 from src.Substitution import Substitution
@@ -32,31 +31,19 @@ def get_opt(compreply: str) -> str:
 
 
 def edit() -> None:
-    print('\nВведите схему нормального алгоритма: (ввод заканчивается новой строкой)')
-    lines = []
-    t = ['', '']
-    j = 0
-    while True:
-        stdout.write('\r')
-        r = f'... {t[0]} -> {t[1]}'
-        stdout.write(r)
-        stdout.write('\r')
-        stdout.write(r[:len(t[j]) + j*8 + 4])
-        i = getch()
-        if i == '\r':
-            stdout.write('\u001b[0K')
-            break
-        elif i in ' ':
-            if j == 0:
-                j += 1
-            else:
-                lines.append('{} -> {}'.format(*t))
-                t = ['', '']
-                j = 0
-                stdout.write('\n')
-        else:
-            t[j] += i
+    print('''Введите схему нормального алгоритма: (ввод заканчивается пустой строкой)
 
+Примеры ввода:
+... a b    ~  a -> b
+... bc d   ~  bc -> d
+... d .E   ~  d -> .E
+''')
+    lines = []
+    while True:
+        i = input('... ')
+        if not i:
+            break
+        lines.append(i)
     g['alg'] = MarkovAlgorithm(lines)
 
 
@@ -93,11 +80,7 @@ opts = {
 def main() -> None:
     _help()
     while True:
-        try:
-            opt = get_opt('>>> ')
-        except UnicodeDecodeError:
-            opt = ' '
-            print()
+        opt = get_opt('>>> ')
         try:
             opts[opt]()
         except KeyError:
@@ -105,7 +88,7 @@ def main() -> None:
         except KeyboardInterrupt:
             exit()
         except Exception as e:
-            print(e)
+            print(f'{str(e)}:{e}')
 
 
 if __name__ == '__main__':
