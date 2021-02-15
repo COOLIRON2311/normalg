@@ -1,7 +1,7 @@
 from .Substitution import Substitution, Word
 
 
-class SigmaError(Exception):
+class SigmaException(Exception):
     pass
 
 
@@ -10,13 +10,13 @@ class MarkovAlgorithm:
     sigma: 'set[str]'
     MAXITER = 100
 
-    def __init__(self, value: 'list | str') -> None:
+    def __init__(self, value: 'list | str', sep: str = ' ') -> None:
         self.scheme = []
         self.sigma = set()
         if isinstance(value, str):
             value = (i for i in value.splitlines() if i)
         for i in value:
-            _s = Substitution(i)
+            _s = Substitution(i, sep)
             self.scheme.append(_s)
             self.sigma.update(set(_s.pair[0].str))
             self.sigma.update(set(_s.pair[1].str))
@@ -26,7 +26,7 @@ class MarkovAlgorithm:
         for i in self.scheme:
             ret.append(f'╎ {i}')
         ret.append('╰')
-        ret.append(f'Σ = {self.sigma}')
+        ret.append(f"Σ' = {self.sigma}")
         return '\n'.join(ret)
 
     def apply(self, word: 'str | Word', verbose=False) -> Word:
@@ -34,7 +34,7 @@ class MarkovAlgorithm:
             word = Word(word)
         for i in word.str:
             if i not in self.sigma:
-                raise SigmaError(f'letter {i} not in sigma')
+                raise SigmaException(f'letter {i} not in sigma')
         _it = 1
         while True:
             e = None
@@ -58,4 +58,4 @@ class MarkovAlgorithm:
                     return word
                 _it += 1
                 if self.MAXITER and _it > self.MAXITER:
-                    raise StopIteration('maximum iteration count exceeded')
+                    raise StopIteration('iteration limit exceeded')

@@ -2,6 +2,7 @@ from msvcrt import getch as _getch
 from os import name
 from sys import exit
 from colorama import init
+
 from src import MarkovAlgorithm
 from src.Substitution import Substitution
 
@@ -10,12 +11,15 @@ g = globals()
 alg: MarkovAlgorithm = None
 
 __doc__ = """
-Опции:
-e:           редактировать схему алгоритма
-p:           распечатать схему алгоритма
-r:           применить алгоритм
-h:           показать помощь
-q:           выйти
+                       ~ Опции ~
+ e:           редактировать схему алгоритма
+ p:           показать схему алгоритма
+ r:           применить алгоритм к слову
+ s:           сохранить схему алгоритма
+ l:           загрузить схему алгоритма
+ m:           установить лимит итераций
+ h:           показать помощь
+ q:           выйти из программы
 
 """
 
@@ -55,8 +59,48 @@ def _print() -> None:
         print('Схема алгоритма не задана\n')
 
 
-def _help():
+def _setm() -> None:
+    if alg:
+        print(f'''Введите новое максимальное количество итераций:
+(текущее - {alg.MAXITER}, 0 - неограниченно)''')
+        n = input('... ')
+        alg.MAXITER = int(n)
+    else:
+        print('Схема алгоритма не задана\n')
+
+
+def _help() -> None:
     print(__doc__)
+
+
+def save() -> None:
+    print('\nВведите имя схемы: ')
+    _name = input('... ')
+    if alg:
+        try:
+            with open('alg/'+_name+'.alg', 'w') as f:
+                for i in alg.scheme:
+                    f.write(f'{i}\n')
+        except Exception:
+            print('Ошибка')
+        else:
+            print('\nСхема сохранена')
+    else:
+        print('Схема алгоритма не задана\n')
+
+
+def load() -> None:
+    print('\nВведите имя схемы: ')
+    _name = input('... ')
+    try:
+        with open('alg/'+_name+'.alg', 'r') as f:
+            t = f.read()
+        g['alg'] = MarkovAlgorithm(t, sep='->')
+    except Exception:
+        print('Ошибка')
+    else:
+        print('\nСхема загружена')
+        _print()
 
 
 def run():
@@ -72,7 +116,10 @@ def run():
 opts = {
     'e': edit,
     'h': _help,
+    'm': _setm,
     'p': _print,
+    's': save,
+    'l': load,
     'q': exit,
     'r': run
 }
@@ -81,15 +128,19 @@ opts = {
 def main() -> None:
     _help()
     while True:
-        opt = get_opt('>>> ')
+        try:
+            opt = get_opt('>>> ')
+        except UnicodeDecodeError:
+            print()
+            continue
         try:
             opts[opt]()
         except KeyError:
-            pass
+            continue
         except KeyboardInterrupt:
             exit()
         except Exception as e:
-            print(f'{str(e)}:{e}')
+            print(e)
 
 
 if __name__ == '__main__':

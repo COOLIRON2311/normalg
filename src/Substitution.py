@@ -2,14 +2,13 @@ from .Entry import Entry, Word
 
 
 class Substitution:
-    SPLIT: str = ' '
     pair: 'list[Word]'
     final: bool
 
-    def __init__(self, value: str) -> None:
+    def __init__(self, value: str, sep: str = ' ') -> None:
         self.final = '.' in value
         self.pair = []
-        for i in value.split(self.SPLIT):
+        for i in value.split(sep):
             self.pair.append(Word(i.strip(' .')))
 
     def __repr__(self) -> str:
