@@ -42,10 +42,15 @@ def edit() -> None:
 ... a b    ~   a -> b
 ... bc d   ~   bc -> d
 ... d .E   ~   d -> .E
+
+(символ "->" зарезервирован)
 ''')
     lines = []
     while True:
         i = input('... ')
+        if '->' in i:
+            print('Некорректный ввод\n')
+            return
         if not i:
             break
         lines.append(i)
@@ -140,24 +145,8 @@ def main() -> None:
         except KeyboardInterrupt:
             exit()
         except Exception as e:
-            print(e)
+            print(f'{type(e).__name__}: {e}')
 
 
 if __name__ == '__main__':
     main()
-
-# print(getch())
-"""
-a = MarkovAlgorithm(
-    '''
-a -> b
-b -> c
-c -> E
-E -> .b
-'''
-)
-# print(a.scheme, a.sigma)
-print(a)
-print()
-print(a.apply('abbc', True))
-"""
