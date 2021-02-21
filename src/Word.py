@@ -4,13 +4,11 @@ class Word:
     EMPTY: str = 'E'
 
     def __init__(self, value: str) -> None:
-        if not value:
-            value = self.EMPTY
-        self.__value = value
+        self.__value = value.replace(self.EMPTY, '')
 
     def __repr__(self) -> str:
-        return self.__value
+        return self.__value if self.__value else self.EMPTY
 
     @property
     def str(self) -> str:
-        return self.__value if self.__value != self.EMPTY else ''
+        return self.__value

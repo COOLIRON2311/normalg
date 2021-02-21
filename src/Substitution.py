@@ -10,6 +10,8 @@ class Substitution:
         self.pair = []
         for i in value.split(sep):
             self.pair.append(Word(i.strip(' .')))
+        if len(self.pair) < 2:
+            raise SyntaxError('invalid substitution syntax')
 
     def __repr__(self) -> str:
         return f'{self.pair[0]} -> {"." if self.final else ""}{self.pair[1]}'

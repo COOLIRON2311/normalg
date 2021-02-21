@@ -1,3 +1,4 @@
+from operator import truth
 from .Substitution import Substitution, Word
 
 
@@ -14,7 +15,7 @@ class MarkovAlgorithm:
         self.scheme = []
         self.sigma = set()
         if isinstance(value, str):
-            value = (i for i in value.splitlines() if i)
+            value = filter(truth, map(str.strip, value.splitlines()))
         for i in value:
             _s = Substitution(i, sep)
             self.scheme.append(_s)
@@ -34,7 +35,7 @@ class MarkovAlgorithm:
             word = Word(word)
         for i in word.str:
             if i not in self.sigma:
-                raise SigmaException(f'letter {i} not in sigma')
+                raise SigmaException(f"letter '{i}' not in sigma")
         _it = 1
         while True:
             e = None
