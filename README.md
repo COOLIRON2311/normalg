@@ -50,29 +50,22 @@
 
 Схема загружена
 ╭
-╎ a -> b
-╎ b -> c
-╎ c -> E
+╎ ba -> ab
+╎ ca -> ac
+╎ cb -> bc
 ╰
-Σ' = {'c', 'b', 'a'}
+Σ' = {'a', 'b', 'c'}
 
 >>> r
 
 Введите слово:
-... aabbcc
-1) aabbcc -> babbcc
-2) babbcc -> bbbbcc
-3) bbbbcc -> cbbbcc
-4) cbbbcc -> ccbbcc
-5) ccbbcc -> cccbcc
-6) cccbcc -> cccccc
-7) cccccc -> ccccc
-8) ccccc -> cccc
-9) cccc -> ccc
-10) ccc -> cc
-11) cc -> c
-12) c ->
+... cbacb
+1) cbacb -> cabcb
+2) cabcb -> acbcb
+3) acbcb -> abccb
+4) abccb -> abcbc
+5) abcbc -> abbcc
 
-Результат: E
+Результат: abbcc
 >>>
 ```

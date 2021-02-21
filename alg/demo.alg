@@ -1,3 +1,3 @@
-a -> b
-b -> c
-c -> E
+ba -> ab
+ca -> ac
+cb -> bc
